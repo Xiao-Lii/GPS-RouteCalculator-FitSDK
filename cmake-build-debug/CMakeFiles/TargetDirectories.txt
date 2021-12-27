@@ -1,3 +1,0 @@
-/mnt/c/Users/Lee/Documents/Interview Practice/GPS-RouteCalculator-FitSDK/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/mnt/c/Users/Lee/Documents/Interview Practice/GPS-RouteCalculator-FitSDK/cmake-build-debug/CMakeFiles/edit_cache.dir
-/mnt/c/Users/Lee/Documents/Interview Practice/GPS-RouteCalculator-FitSDK/cmake-build-debug/CMakeFiles/GPS_RouteCalculator_FitSDK.dir

@@ -1,1 +1,0 @@
-/usr/bin/c++  -g   CMakeFiles/GPS_RouteCalculator_FitSDK.dir/main.cpp.o  -o GPS_RouteCalculator_FitSDK 
