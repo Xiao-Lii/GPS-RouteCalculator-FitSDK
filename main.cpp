@@ -4,17 +4,17 @@
 #include <string>
 using namespace std;
 
-/* GPS Route Distance Calculator - 24.9 meters
+/* GPS Route Distance Calculator - Answer: 24.9 meters
 
 Part 1 Requirements/Assumptions:
 - Language: C++
-- Implement an algorithm that calcs the total distance in meters of a route represented by gps coordinates
+- Implement an algorithm that calculates the total distance in meters of a route represented by gps coordinates
 - Explain thought process to answer and why
 - Range of Lat = -90 to 90/Long = -180 to 180 decimal degree format
 
 Functions we'll need:
 - Conversions: radians, meters, and semicircles
-- Reads a n-list number of coordinates in semi-circles
+- Reads an n-list number of coordinates in semi-circles
 - Subtract two points to find difference in lat & lon
 - Get sum of these distances
 - Convert semi-circles to meters
