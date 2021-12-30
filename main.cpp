@@ -1,85 +1,73 @@
-#include <iostream>
-#include <cmath>
-#include <map>
-#include <string>
-using namespace std;
+#include "gpsFunctions.cpp"
 
-/* GPS Route Distance Calculator - 24.9 meters
+/*
+THOUGHT PROCESS FOR PART 1: 
+GPS Route Distance Calculator - 24.9 meters(Hint)
 
-Part 1 Requirements/Assumptions:
-- Language: C++
+------- Part 1 Requirements/Assumptions: -------
 - Implement an algorithm that calcs the total distance in meters of a route represented by gps coordinates
-- Explain thought process to answer and why
 - Range of Lat = -90 to 90/Long = -180 to 180 decimal degree format
-
-Functions we'll need:
+------- Functions we'll need: -------
 - Conversions: radians, meters, and semicircles
 - Reads a n-list number of coordinates in semi-circles
-- Subtract two points to find difference in lat & lon
-- Get sum of these distances
-- Convert semi-circles to meters
+    - Research which algorithm is the most efficient for recursions vs. iterating: https://www.geeksforgeeks.org/difference-between-recursion-and-iteration/
+    - Found info about algorithms here: https://docs.microsoft.com/en-us/cpp/standard-library/algorithm?view=msvc-170
+    - Thought about how each index of coordinates are connected like a linked-list 
+    - Found some info about time efficient lambda functions: https://docs.microsoft.com/en-us/cpp/cpp/lambda-expressions-in-cpp?view=msvc-170
+    - Learned more about efficient iterator loops through trial & error and comparing run times
+        - Using const, for loops, auto, iterators, STL Containers, etc. 
+- Subtract two points to find difference in lat & long
+    - Return sum of these distances from an n-list in meters
+    - Learn how to utilize a vector of pairs and auto-iterators to access its members
+- Utilizes pythagorean theorem to find exact distance between two points
+    - Take sum of each pair of pts & that should be our total distance
+
+THOUGHT PROCESS FOR PART 2:
+Use the FIT SDK to decode the GPS coordinates from a FIT Activity File
+
+------- Part 2 Requirements/Assumptions: -------
+- The file is in FIT format
+- Utilizing the pre-established libraries, read the coordinates as an input to the algorithm designed in part one
+- Include a short write-up on how I solved the problem
+- Download the FIT SDK file: https://developer.garmin.com/fit/overview/
+
+Problem-Solving Process & Goals:
+- Compile the decode example files provided
+    - Need: A listener object that inherits FileIdMesgListener, DeveloperFieldDescriptionListener, RecordMesgListener
+    - Error Handling for missing values to ignore and look at Field 8 & Value 8, assuming these are FileIDs
+- Ensure compiler is running properly (had issues with this - Windows SDK 10 not installed, outdated VS files, etc.)
+- Refer to documentation about utilizing the FIT_SDK:
+- Refer to the Actvity.csv format in the example folder 
 */
 
-class coordinates{
-    int lat;
-    int lon;
+int main(int argc, char* argv[]){
+    // For part 2 implementation
+    // std::fstream file; 
 
-public:
-    coordinates(int lat, int lon) : lat(lat), lon(lon) {}
-    int getLat() const {return lat;}
-    void setLat(int lat) {coordinates::lat = lat;}
-    int getLon() const {return lon;}
-    void setLon(int lon) {coordinates::lon = lon;}
-};
+    // Sample GPS Coordinates in semicircles
+    std::vector<std::pair<int, int>> route = {
+        {476914587, -1254520202},
+        {476914647, -1254520081},
+        {476914726, -1254519979},
+        {476914862, -1254529795},
+        {476915068, -1254529544},
+        {476915367, -1254529275},
+        {476915725, -1254528926},
+        {476916045, -1254528539},
+        {476916311, -1254528154},
+        {476916484, -1254527787},
+    };
 
-// 180° == πradians == 0x80000000 32 bit semicircles
-int PI_RADIANS = 0x80000000;
+    printCoordinates(route);
+    printf("\nStarting Calculations...\n");
+    printf("\nTotal Distance: %d",calcRouteDistance(route));
 
-// Semicircles per meter at the equator
-double SC_PER_METER = 107.173;
+    // printf("Preparing to read Activity.CSV File\n");
+    // file.open(argv[1], std::ios::in | std::ios::binary);
 
-// Sample GPS Coordinates in semicircles
-//map<string, int, string, int> route = {};
-//var route = {
-//    {lat:476914587, lon:-1254520202},
-//    {lat:476914647, lon:-1254520081},
-//    {lat:476914726, lon:-1254519979},
-//    {lat:476914862, lon:-1254529795},
-//    {lat:476915068, lon:-1254529544},
-//    {lat:476915367, lon:-1254529275},
-//    {lat:476915725, lon:-1254528926},
-//    {lat:476916045, lon:-1254528539},
-//    {lat:476916311, lon:-1254528154},
-//    {lat:476916484, lon:-1254527787}
-//    };
-
-//void createRoute()
-
-// Convert Semi-Circle to Radians
-double semicirclesToRadians(int semicircles){
-    return ((semicircles * M_PI) / PI_RADIANS);
-}
-
-// Convert Semi-Circle to Degrees
-double semicirclesToDegrees(int semicircles){
-    return semicircles * (180 / PI_RADIANS);
-}
-
-// Convert Semi-Circle to Meters at the Equator
-double semicirclesToMeters(int semicircles){
-    return semicircles * (180 / PI_RADIANS);
-}
-
-// Find differences in n-list set of GPS coordinates
-//double calcDiff(map<int, int> listCoords){
-//    int length = listCoords.length();
-//
-//}
-
-int main(){
-    int lat = 476914587;
-    int lon = -1254520202;
-
-    cout << semicirclesToDegrees(lat);
-    cout << semicirclesToDegrees(lon);
+    // if (!file.is_open())
+    // {
+    //     printf("Error opening files %s\n", argv[1]);
+    //     return -1;
+    // }
 }
