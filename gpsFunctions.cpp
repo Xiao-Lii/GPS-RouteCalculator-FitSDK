@@ -2,23 +2,19 @@
 #include <iostream>
 #include <utility>
 #include <iostream>
-#include <map>
 #include <string>
 #include <vector>
 #include <math.h>
 #include <stdio.h>
 #include <iterator>
 
-
 // #include "cpp/fit_decode.hpp"
 // #include "cpp/fit_mesg_broadcaster.hpp"
 // #include "cpp/fit_developer_field_description.hpp"
 
-# define SC_PER_METER    107.173;                   // Semicircles per meter at the equator
-# define M_PI           3.14159265358979323846      // Pi decimal format
-
-// 180° == πradians == 0x80000000 32 bit semicircles
-unsigned int PI_RADIANS = 0x80000000;
+# define SC_PER_METER       107.173                     // Semicircles per meter at the equator
+# define M_PI               3.14159265358979323846      // Pi decimal format
+unsigned int PI_RADIANS =   0x80000000;                 // 180° == πradians == 0x80000000 32 bit semicircles
 
 
 // Convert Semi-Circle to Radians
@@ -38,12 +34,17 @@ double semicirclesToMeters(int semicircles){
     return semicircles * (180 / PI_RADIANS);
 }
 
+// Need to think about calculating semicircles to meters on a globe persepctive 
+// Long gets closers moving away from the equator - Look at calculating in terms of point of meridian & equator
+// The farther north, or south, you are from the equator, the less distance you travel east <-> west for a given degree of longitude. 
+// Extra step needed for solution to get a more accurate result.
+
 
 // Calcs distance between GPS pts then provides total route distance in meters
+// REVIEW: How squaring multiplying, and how negative numbers are handled
 int calcRouteDistance(std::vector<std::pair<int,int>> route){
-    double sum = 0;
+    double c, m, sum = 0;
     int a, b;
-    double c, m;
 
     // Chose an iterator so that we could compare the indexes in our vector of pairs
     for (auto itr = route.begin(); itr != route.end(); itr++){
@@ -77,3 +78,7 @@ void printCoordinates(std::vector<std::pair<int,int>> route){
         printf("Lat: %d Long: %d\n", coordinates.first, coordinates.second);
     }
 }
+
+// Depending on the command line options there are two formats of CSV, and one is a lot easier to work with than the other. 
+// The online FIT CSV Tool docs has an example of exactly what you need to do to get the easier to work with CSV format, so read it carefully. 
+// But modifying decode.cpp should be easier still.
