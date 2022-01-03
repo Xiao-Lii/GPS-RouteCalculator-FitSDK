@@ -1,12 +1,9 @@
 #include <fstream>
 #include <iostream>
 #include <utility>
-#include <iostream>
-#include <string>
 #include <vector>
 #include <math.h>
 #include <stdio.h>
-#include <iterator>
 
 // #include "cpp/fit_decode.hpp"
 // #include "cpp/fit_mesg_broadcaster.hpp"
@@ -46,7 +43,7 @@ double semicirclesToMeters(int semicircles){
 // and returns the sum in meters 
 int calcRouteDistance(std::vector<std::pair<int,int>> route){
     double c, m, sum = 0;
-    long a, b;
+    signed long a, b;
 
     // Chose an iterator so that we could compare the indexes in our vector of pairs
     for (auto itr = route.begin(); itr != route.end(); itr++){
@@ -58,10 +55,10 @@ int calcRouteDistance(std::vector<std::pair<int,int>> route){
                 auto nextIndex = itr;
                 --itr;
 
-                a = (*nextIndex).first - (*itr).first;         // Delta Lat Value 
+                a = (*nextIndex).first - (*itr).first;          // Delta Lat Value
                 printf("Delta Lat = %d - %d = %d\n", (*nextIndex).first, (*itr).first, a);
-                b = (*nextIndex).second - abs((*itr).second);  // Delta Long Value
-                printf("Delta Lat = %d - %d = %d\n", (*nextIndex).second, (*itr).second, b);
+                b = (*nextIndex).second - (*itr).second;        // Delta Long Value
+                printf("Delta Long = %d - %d = %d\n", (*nextIndex).second, (*itr).second, b);
 
                 // Plug into haversine formulae 
                 c = sqrt(pow(a, 2) + pow(b,2)); 
@@ -70,7 +67,7 @@ int calcRouteDistance(std::vector<std::pair<int,int>> route){
 
                 // Need to double check math and iteration, math doesn't seem right
                 // Getting a total distance of 118 meters but I'm sure I missed something 
-                printf("A: %d B: %d C: %f M: %f\n", a, b, c, m);
+                //printf("A: %d B: %d C: %f M: %f\n", a, b, c, m);
                 itr++;
             }
         }

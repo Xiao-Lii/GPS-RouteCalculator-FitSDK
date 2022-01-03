@@ -18,8 +18,12 @@ GPS Route Distance Calculator - 24.9 meters(Hint)
 - Subtract two points to find difference in lat & long 
     - Return sum of these distances from an n-list in meters
     - Learn how to utilize a vector of pairs and auto-iterators to access its members
-- Utilizes the haversine formula to find exact distance between two points across a sphere
+
+ADDITIONAL THOUGHTS/NOTES FOR PART 1:
+- Utilize the haversine formula or Great Distance formula to find exact distance between two points across a sphere
     - Take sum of each pair of pts & that should be our total distance
+    - Subtraction of the negatives aren't being processed correctly - bits are overflowing, negatives aren't being handled 
+    - 
 
 THOUGHT PROCESS FOR PART 2:
 Use the FIT SDK to decode the GPS coordinates from a FIT Activity File
