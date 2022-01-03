@@ -20,10 +20,11 @@ GPS Route Distance Calculator - 24.9 meters(Hint)
     - Learn how to utilize a vector of pairs and auto-iterators to access its members
 
 ADDITIONAL THOUGHTS/NOTES FOR PART 1:
-- Utilize the haversine formula or Great Distance formula to find exact distance between two points across a sphere
-    - Take sum of each pair of pts & that should be our total distance
-    - Subtraction of the negatives aren't being processed correctly - bits are overflowing, negatives aren't being handled 
-    - 
+- Need to determine which algorithm/formula to use for calculating route:
+    - Vincenty Formula: Most accurate, computationally intensive = slow & higher battery drainage
+    - Haversine/Great Circle Distance formula: Very accurate, not as intensive = better runtime & less battery drainage
+- Negatives aren't being processed correctly - check if bits are overflowing, negatives aren't being handled, pow & sqrt functions
+- Fixed Debugger issues w/ CLion - important for viewing values as the program is processing the distances
 
 THOUGHT PROCESS FOR PART 2:
 Use the FIT SDK to decode the GPS coordinates from a FIT Activity File
@@ -65,12 +66,5 @@ int main(int argc, char* argv[]){
     printf("\nStarting Calculations...\n");
     printf("\nTotal Distance: %d",calcRouteDistance(route));
 
-    // printf("Preparing to read Activity.CSV File\n");
-    // file.open(argv[1], std::ios::in | std::ios::binary);
 
-    // if (!file.is_open())
-    // {
-    //     printf("Error opening files %s\n", argv[1]);
-    //     return -1;
-    // }
 }

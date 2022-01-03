@@ -2,8 +2,8 @@
 #include <iostream>
 #include <utility>
 #include <vector>
-#include <math.h>
-#include <stdio.h>
+#include <cmath>
+#include <cstdio>
 
 // #include "cpp/fit_decode.hpp"
 // #include "cpp/fit_mesg_broadcaster.hpp"
@@ -23,13 +23,13 @@ double semicirclesToRadians(int semicircles){
 
 // Convert Semi-Circle to Degrees
 double semicirclesToDegrees(int semicircles){
-    return semicircles * (180 / PI_RADIANS);
+    return semicircles * (180.0 / PI_RADIANS);
 }
 
 
 // Convert Semi-Circle to Meters at the Equator
 double semicirclesToMeters(int semicircles){
-    return semicircles * (180 / PI_RADIANS);
+    return semicircles * (180.0 / PI_RADIANS);
 }
 
 // Need to think about calculating semicircles to meters on a globe persepctive 
@@ -42,42 +42,51 @@ double semicirclesToMeters(int semicircles){
 // dist = 6378.388 * acos(sin(lat1) * sin(lat2) + cos(lat1) * cos(lat2) * cos(lon2 - lon1))
 // and returns the sum in meters 
 int calcRouteDistance(std::vector<std::pair<int,int>> route){
-    double c, m, sum = 0;
-    signed long a, b;
+    double c, test, testSum = 0;
+    signed long deltaLat, deltaLong, lat1, lat2, long1, long2, m;
+    int sum = 0;
 
     // Chose an iterator so that we could compare the indexes in our vector of pairs
     for (auto itr = route.begin(); itr != route.end(); itr++){
-        //printf("Lat: %d Long: %d\n", itr->first, itr->second);
 
-        // An iterator with a +1 starting index in our starting vector of pairs
+        // An iterator with deltaLat +1 starting index in our starting vector of pairs
         for (auto itr2 = route.begin() + 1; itr2 != route.end(); itr2++){
             if (itr->first == itr2->first){
                 auto nextIndex = itr;
                 --itr;
 
-                a = (*nextIndex).first - (*itr).first;          // Delta Lat Value
-                printf("Delta Lat = %d - %d = %d\n", (*nextIndex).first, (*itr).first, a);
-                b = (*nextIndex).second - (*itr).second;        // Delta Long Value
-                printf("Delta Long = %d - %d = %d\n", (*nextIndex).second, (*itr).second, b);
+                lat1 = semicirclesToRadians(itr->first);
+                lat2 = semicirclesToRadians(nextIndex->first);
+                printf("LAT1: %l LAT2: %l\n", lat1, lat2);
 
-                // Plug into haversine formulae 
-                c = sqrt(pow(a, 2) + pow(b,2)); 
+                deltaLat = (*nextIndex).first - (*itr).first;                                       // Delta Lat Value
+                deltaLong = (*nextIndex).second - (*itr).second;     // Delta Long Value
+
+                // The Great Distance Formula in Radians
+                // D = R(PI/180) * ACOS[SIN(LAT1) * SIN(LAT2) + COS(LAT2) * COS(LAT1) * COS(LAT2-LAT1)]
+                test = (E_RADIUS_METER/PI_RADIANS) * acos(sin(lat1) * sin(lat2) + cos(lat1) * cos(lat2) * cos(
+                        semicirclesToRadians(deltaLong)));
+                testSum += test;
+//                a = (pow(sin(deltaLat/2), 2));
+
+                // We need to consider point of meridian when moving away from the equator
+                c = sqrt(pow(deltaLat, 2) + pow(deltaLong, 2));
                 m = c / SC_PER_METER;
                 sum += m;
 
                 // Need to double check math and iteration, math doesn't seem right
-                // Getting a total distance of 118 meters but I'm sure I missed something 
-                //printf("A: %d B: %d C: %f M: %f\n", a, b, c, m);
+                // Getting deltaLat total distance of 118 meters but I'm sure I missed something
+                printf("A: %d\t B: %d\t C: %f \tM: %f\n", deltaLat, deltaLong, c, m);
                 itr++;
             }
         }
     }
+    printf("TEST SUM: %d\n", testSum);
     return sum;
 }
 
-
 // Print All Coordinates in: Lat then Long in semicircles 
-void printCoordinates(std::vector<std::pair<int,int>> route){
+void printCoordinates(const std::vector<std::pair<int,int>>& route){
     for (auto& coordinates : route){
         printf("Lat: %d Long: %d\n", coordinates.first, coordinates.second);
     }
