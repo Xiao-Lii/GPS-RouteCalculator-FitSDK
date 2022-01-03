@@ -12,14 +12,13 @@ GPS Route Distance Calculator - 24.9 meters(Hint)
 - Reads a n-list number of coordinates in semi-circles
     - Research which algorithm is the most efficient for recursions vs. iterating: https://www.geeksforgeeks.org/difference-between-recursion-and-iteration/
     - Found info about algorithms here: https://docs.microsoft.com/en-us/cpp/standard-library/algorithm?view=msvc-170
-    - Thought about how each index of coordinates are connected like a linked-list 
     - Found some info about time efficient lambda functions: https://docs.microsoft.com/en-us/cpp/cpp/lambda-expressions-in-cpp?view=msvc-170
     - Learned more about efficient iterator loops through trial & error and comparing run times
         - Using const, for loops, auto, iterators, STL Containers, etc. 
-- Subtract two points to find difference in lat & long
+- Subtract two points to find difference in lat & long 
     - Return sum of these distances from an n-list in meters
     - Learn how to utilize a vector of pairs and auto-iterators to access its members
-- Utilizes pythagorean theorem to find exact distance between two points
+- Utilizes the haversine formula to find exact distance between two points across a sphere
     - Take sum of each pair of pts & that should be our total distance
 
 THOUGHT PROCESS FOR PART 2:
