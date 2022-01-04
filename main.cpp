@@ -22,7 +22,8 @@ GPS Route Distance Calculator - 24.9 meters(Hint)
 ADDITIONAL THOUGHTS/NOTES FOR PART 1:
 - Need to determine which algorithm/formula to use for calculating route:
     - Vincenty Formula: Most accurate, computationally intensive = slow & higher battery drainage
-    - Haversine/Great Circle Distance formula: Very accurate, not as intensive = better runtime & less battery drainage
+    - Haversine: Very accurate, not as intensive = better runtime & less battery drainage than Vincenty
+    - Great Circle Distance formula: Better than the simple approach, fairly accurate, not computationally intensive
 - Negatives aren't being processed correctly - check if bits are overflowing, negatives aren't being handled, pow & sqrt functions
 - Fixed Debugger issues w/ CLion - important for viewing values as the program is processing the distances
 
@@ -53,17 +54,16 @@ int main(int argc, char* argv[]){
         {476914587, -1254520202},
         {476914647, -1254520081},
         {476914726, -1254519979},
-        {476914862, -1254529795},
-        {476915068, -1254529544},
-        {476915367, -1254529275},
-        {476915725, -1254528926},
-        {476916045, -1254528539},
-        {476916311, -1254528154},
-        {476916484, -1254527787},
+        {476914862, -1254519795},
+        {476915068, -1254519544},
+        {476915367, -1254519275},
+        {476915725, -1254518926},
+        {476916045, -1254518539},
+        {476916311, -1254518154},
+        {476916484, -1254517787},
     };
 
     printCoordinates(route);
-    printf("\nStarting Calculations...\n");
     printf("\nTotal Distance: %d",calcRouteDistance(route));
 
 
