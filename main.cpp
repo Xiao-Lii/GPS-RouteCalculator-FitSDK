@@ -1,7 +1,5 @@
-#include "gpsFunctions.cpp"
-
 /*
-THOUGHT PROCESS FOR PART 1: 
+|| ------- THOUGHT PROCESS FOR PART 1: ------- ||
 GPS Route Distance Calculator - 24.9 meters(Hint)
 
 ------- Part 1 Requirements/Assumptions: -------
@@ -19,15 +17,17 @@ GPS Route Distance Calculator - 24.9 meters(Hint)
     - Return sum of these distances from an n-list in meters
     - Learn how to utilize a vector of pairs and auto-iterators to access its members
 
-ADDITIONAL THOUGHTS/NOTES FOR PART 1:
+|| ------- ADDITIONAL THOUGHTS/NOTES FOR PART 1: ------- ||
 - Need to determine which algorithm/formula to use for calculating route:
     - Vincenty Formula: Most accurate, computationally intensive = slow & higher battery drainage
     - Haversine: Very accurate, not as intensive = better runtime & less battery drainage than Vincenty
     - Great Circle Distance formula: Better than the simple approach, fairly accurate, not computationally intensive
 - Negatives aren't being processed correctly - check if bits are overflowing, negatives aren't being handled, pow & sqrt functions
+    - Pow * sqrt functions seem to be behaving as expected for negatives
 - Fixed Debugger issues w/ CLion - important for viewing values as the program is processing the distances
 
-THOUGHT PROCESS FOR PART 2:
+
+|| ------- THOUGHT PROCESS FOR PART 2: ------- ||
 Use the FIT SDK to decode the GPS coordinates from a FIT Activity File
 
 ------- Part 2 Requirements/Assumptions: -------
@@ -36,14 +36,23 @@ Use the FIT SDK to decode the GPS coordinates from a FIT Activity File
 - Include a short write-up on how I solved the problem
 - Download the FIT SDK file: https://developer.garmin.com/fit/overview/
 
-Problem-Solving Process & Goals:
+------- Problem-Solving Process & Goals: -------
 - Compile the decode example files provided
     - Need: A listener object that inherits FileIdMesgListener, DeveloperFieldDescriptionListener, RecordMesgListener
     - Error Handling for missing values to ignore and look at Field 8 & Value 8, assuming these are FileIDs
 - Ensure compiler is running properly (had issues with this - Windows SDK 10 not installed, outdated VS files, etc.)
 - Refer to documentation about utilizing the FIT_SDK:
-- Refer to the Actvity.csv format in the example folder 
+- Refer to the Actvity.csv format in the example folder
+
+|| ------- ADDITIONAL THOUGHTS/NOTES FOR PART 2: ------- ||
+- GPS data will be stored in the RecordMessage
+-
 */
+
+#include "gpsFunctions.cpp"
+#include "fit_decode.hpp"
+#include "fit_mesg_broadcaster.hpp"
+#include "fit_developer_field_description.hpp"
 
 int main(int argc, char* argv[]){
     // For part 2 implementation

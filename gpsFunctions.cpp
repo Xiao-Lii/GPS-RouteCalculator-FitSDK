@@ -47,7 +47,7 @@ double semicirclesToMeters(int semicircles){
 int calcRouteDistance(std::vector<std::pair<int,int>> route){
     double c, sum = 0;
     signed long deltaLat, deltaLong, lat1, lat2, m_distance, radDeltaLong;
-    
+
 
     // Chose an iterator so that we could compare the indexes in our vector of pairs
     for (auto itr = route.begin(); itr != route.end(); itr++){
@@ -63,14 +63,14 @@ int calcRouteDistance(std::vector<std::pair<int,int>> route){
 
                 // We need to consider point of meridian when moving away from the equator
                 // dist = 6378.388 * acos(sin(lat1) * sin(lat2) + cos(lat1) * cos(lat2) * cos(lon2 - lon1))
-                lat1 = (*itr).first * (M_PI / PI_RADIANS);
-                lat2 = (*nextIndex).first * (M_PI / PI_RADIANS);
-                radDeltaLong = deltaLong * (M_PI / PI_RADIANS);
+                lat1 = itr->first * (M_PI / PI_RADIANS);
+                lat2 = nextIndex->first * (M_PI / PI_RADIANS);
+                radDeltaLong = deltaLong * M_PI / PI_RADIANS;
 
                 m_distance = 6378.388 * acos(sin(lat2) * sin(lat1) + cos(lat2) * cos(lat1) * cos(radDeltaLong));
                 sum += m_distance;
 
-//                // The code below works but in int format, want to test to get as accurate to the tenths
+//                // The code below works but returns an int, want to test to return a more accurate dec-value (up to the tenths)
 //                // We need to consider point of meridian when moving away from the equator
 //                c = sqrt(pow(deltaLat, 2) + pow(deltaLong, 2));
 //                m_distance = c / SC_PER_METER;
