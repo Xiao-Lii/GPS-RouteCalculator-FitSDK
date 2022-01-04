@@ -43,11 +43,11 @@ double semicirclesToMeters(int semicircles){
 
 // Calculates the spherical distance between a set of GPS pts utilizing
 // dist = 6378.388 * acos(sin(lat1) * sin(lat2) + cos(lat1) * cos(lat2) * cos(lon2 - lon1))
-// and returns the sum in meters 
+// and returns the sum in kilometers
 int calcRouteDistance(std::vector<std::pair<int,int>> route){
     double c, sum = 0;
     signed long deltaLat, deltaLong, lat1, lat2, m_distance, radDeltaLong;
-
+    int *lat1Ptr, *lat2Ptr, *long1Ptr, *long2Ptr;
 
     // Chose an iterator so that we could compare the indexes in our vector of pairs
     for (auto itr = route.begin(); itr != route.end(); itr++){
@@ -61,17 +61,23 @@ int calcRouteDistance(std::vector<std::pair<int,int>> route){
                 deltaLat = (*nextIndex).first - (*itr).first;        // Delta Lat Value
                 deltaLong = (*nextIndex).second - (*itr).second;     // Delta Long Value
 
+                // Trying different ways to dereference the value of the iterator to manipulate
+                lat1Ptr = &(*itr).first;
+                lat2Ptr = &(*nextIndex).first;
+                long1Ptr = &(*itr).second;
+                long2Ptr = &(*nextIndex).second;
+
                 // We need to consider point of meridian when moving away from the equator
                 // dist = 6378.388 * acos(sin(lat1) * sin(lat2) + cos(lat1) * cos(lat2) * cos(lon2 - lon1))
-                lat1 = itr->first * (M_PI / PI_RADIANS);
-                lat2 = nextIndex->first * (M_PI / PI_RADIANS);
+                lat1 = *lat1Ptr * (M_PI / PI_RADIANS);
+                lat2 = *lat2Ptr * (M_PI / PI_RADIANS);
                 radDeltaLong = deltaLong * M_PI / PI_RADIANS;
 
                 m_distance = 6378.388 * acos(sin(lat2) * sin(lat1) + cos(lat2) * cos(lat1) * cos(radDeltaLong));
                 sum += m_distance;
 
-//                // The code below works but returns an int, want to test to return a more accurate dec-value (up to the tenths)
-//                // We need to consider point of meridian when moving away from the equator
+//                // The simple distance code below works but returns an int, want to test to return a more accurate dec-value (up to the tenths)
+//                // Comment out lines 64-77 to see the simple distance calculator run below
 //                c = sqrt(pow(deltaLat, 2) + pow(deltaLong, 2));
 //                m_distance = c / SC_PER_METER;
 //                sum += m_distance;
@@ -83,15 +89,28 @@ int calcRouteDistance(std::vector<std::pair<int,int>> route){
             }
         }
     }
-    return sum;
+    return sum * 1000.0;
 }
 
 // Print All Coordinates in: Lat then Long in semicircles 
 void printCoordinates(const std::vector<std::pair<int,int>>& route){
-    printf("\nCalculating distances between last route...\n");
+    printf("\nDisplaying all coordinates in list\n");
 
     for (auto& coordinates : route){
         printf("Lat: %d Long: %d\n", coordinates.first, coordinates.second);
+    }
+}
+
+// Print All Coordinates in: Lat then Long in degrees
+// NEEDS REVIEW: NOT PRINTING BACK THE VALUES I WAS EXPECTING
+void printInDegrees(std::vector<std::pair<int,int>>& route){
+    printf("\nDisplaying coordinates in degrees...\n");
+    double lat, lon;
+
+    for (auto& coordinates : route){
+        lat = semicirclesToDegrees(coordinates.first);
+        lon = semicirclesToDegrees(coordinates.second);
+        printf("Lat: %d Long: %d\n", lat, lon);
     }
 }
 

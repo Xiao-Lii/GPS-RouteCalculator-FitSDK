@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.21)
-project(GPS_CLion)
+project(GPS-RouteCalculator-FitSDK)
 
 set(CMAKE_CXX_STANDARD 11)
 
@@ -8,6 +8,7 @@ include_directories(cpp
 
 add_executable(GPS-RouteCalculator-FitSDK
         main.cpp
+        listener.cpp
         cpp/fit.cpp
         cpp/fit.hpp
         cpp/fit_accelerometer_data_mesg.hpp
@@ -241,6 +242,5 @@ add_executable(GPS-RouteCalculator-FitSDK
         cpp/fit_workout_step_mesg.hpp
         cpp/fit_workout_step_mesg_listener.hpp
         cpp/fit_zones_target_mesg.hpp
-        cpp/fit_zones_target_mesg_listener.hpp
-        )
+        cpp/fit_zones_target_mesg_listener.hpp)
 

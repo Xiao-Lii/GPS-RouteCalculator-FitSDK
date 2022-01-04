@@ -20,8 +20,7 @@ GPS Route Distance Calculator - 24.9 meters(Hint)
 || ------- ADDITIONAL THOUGHTS/NOTES FOR PART 1: ------- ||
 - Need to determine which algorithm/formula to use for calculating route:
     - Vincenty Formula: Most accurate, computationally intensive = slow & higher battery drainage
-    - Haversine: Very accurate, not as intensive = better runtime & less battery drainage than Vincenty
-    - Great Circle Distance formula: Better than the simple approach, fairly accurate, not computationally intensive
+    - Haversine / Great Circle Distance formula: Very accurate, not as intensive = better runtime & less battery drainage than Vincenty
 - Negatives aren't being processed correctly - check if bits are overflowing, negatives aren't being handled, pow & sqrt functions
     - Pow * sqrt functions seem to be behaving as expected for negatives
 - Fixed Debugger issues w/ CLion - important for viewing values as the program is processing the distances
@@ -46,17 +45,23 @@ Use the FIT SDK to decode the GPS coordinates from a FIT Activity File
 
 || ------- ADDITIONAL THOUGHTS/NOTES FOR PART 2: ------- ||
 - GPS data will be stored in the RecordMessage
--
+- Review Online SDK Tool to
 */
 
 #include "gpsFunctions.cpp"
+#include "listener.cpp"
 #include "fit_decode.hpp"
 #include "fit_mesg_broadcaster.hpp"
 #include "fit_developer_field_description.hpp"
 
 int main(int argc, char* argv[]){
-    // For part 2 implementation
-    // std::fstream file; 
+    // PART 2 VARIABLES
+    fit::Decode decode;
+    // decode.SkipHeader();       // Use on streams with no header and footer (stream contains FIT defn and data messages only)
+    // decode.IncompleteStream(); // This suppresses exceptions with unexpected eof (also incorrect crc)
+    fit::MesgBroadcaster mesgBroadcaster;
+    Listener listener;
+    std::fstream file;
 
     // Sample GPS Coordinates in semicircles
     std::vector<std::pair<int, int>> route = {
@@ -74,6 +79,42 @@ int main(int argc, char* argv[]){
 
     printCoordinates(route);
     printf("\nTotal Distance: %d",calcRouteDistance(route));
+//    printInDegrees(route);
 
+    // PART 2 IMPLEMENTATION - TESTING
+    printf("FIT Decode Example Application\n");
 
+    if (argc != 2)
+    {
+        printf("Usage: decode.exe <filename>\n");
+        return -1;
+    }
+
+    file.open(argv[1], std::ios::in | std::ios::binary);
+
+    if (!file.is_open())
+    {
+        printf("Error opening file %s\n", argv[1]);
+        return -1;
+    }
+
+    if (!decode.CheckIntegrity(file))
+    {
+        printf("FIT file integrity failed.\nAttempting to decode...\n");
+    }
+
+    mesgBroadcaster.AddListener((fit::RecordMesgListener&)listener);
+    mesgBroadcaster.AddListener((fit::MesgListener &)listener);
+
+    try
+    {
+        decode.Read(&file, &mesgBroadcaster, &mesgBroadcaster, &listener);
+    }
+    catch (const fit::RuntimeException& e)
+    {
+        printf("Exception decoding file: %s\n", e.what());
+        return -1;
+    }
+
+    printf("Decoded FIT file %s.\n", argv[1]);
 }
