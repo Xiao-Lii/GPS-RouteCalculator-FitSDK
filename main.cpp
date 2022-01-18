@@ -1,32 +1,11 @@
+#include "gpsFunctions.cpp"
+#include "listener.cpp"
+#include "fit_decode.hpp"
+#include "fit_mesg_broadcaster.hpp"
+#include "fit_developer_field_description.hpp"
+
 /*
-|| ------- THOUGHT PROCESS FOR PART 1: ------- ||
-GPS Route Distance Calculator - 24.9 meters(Hint)
-
-------- Part 1 Requirements/Assumptions: -------
-- Implement an algorithm that calcs the total distance in meters of a route represented by gps coordinates
-- Range of Lat = -90 to 90/Long = -180 to 180 decimal degree format
-------- Functions we'll need: -------
-- Conversions: radians, meters, and semicircles
-- Reads a n-list number of coordinates in semi-circles
-    - Research which algorithm is the most efficient for recursions vs. iterating: https://www.geeksforgeeks.org/difference-between-recursion-and-iteration/
-    - Found info about algorithms here: https://docs.microsoft.com/en-us/cpp/standard-library/algorithm?view=msvc-170
-    - Found some info about time efficient lambda functions: https://docs.microsoft.com/en-us/cpp/cpp/lambda-expressions-in-cpp?view=msvc-170
-    - Learned more about efficient iterator loops through trial & error and comparing run times
-        - Using const, for loops, auto, iterators, STL Containers, etc. 
-- Subtract two points to find difference in lat & long 
-    - Return sum of these distances from an n-list in meters
-    - Learn how to utilize a vector of pairs and auto-iterators to access its members
-
-|| ------- ADDITIONAL THOUGHTS/NOTES FOR PART 1: ------- ||
-- Need to determine which algorithm/formula to use for calculating route:
-    - Vincenty Formula: Most accurate, computationally intensive = slow & higher battery drainage
-    - Haversine / Great Circle Distance formula: Very accurate, not as intensive = better runtime & less battery drainage than Vincenty
-- Negatives aren't being processed correctly - check if bits are overflowing, negatives aren't being handled, pow & sqrt functions
-    - Pow * sqrt functions seem to be behaving as expected for negatives
-- Fixed Debugger issues w/ CLion - important for viewing values as the program is processing the distances
-
-
-|| ------- THOUGHT PROCESS FOR PART 2: ------- ||
+ * || ------- THOUGHT PROCESS FOR PART 2: ------- ||
 Use the FIT SDK to decode the GPS coordinates from a FIT Activity File
 
 ------- Part 2 Requirements/Assumptions: -------
@@ -46,13 +25,7 @@ Use the FIT SDK to decode the GPS coordinates from a FIT Activity File
 || ------- ADDITIONAL THOUGHTS/NOTES FOR PART 2: ------- ||
 - GPS data will be stored in the RecordMessage
 - Review Online SDK Tool to
-*/
-
-#include "gpsFunctions.cpp"
-#include "listener.cpp"
-#include "fit_decode.hpp"
-#include "fit_mesg_broadcaster.hpp"
-#include "fit_developer_field_description.hpp"
+  */
 
 int main(int argc, char* argv[]){
     // PART 2 VARIABLES
