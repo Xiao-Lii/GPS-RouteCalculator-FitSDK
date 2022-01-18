@@ -56,12 +56,12 @@ Use the FIT SDK to decode the GPS coordinates from a FIT Activity File
 
 int main(int argc, char* argv[]){
     // PART 2 VARIABLES
-    fit::Decode decode;
-    // decode.SkipHeader();       // Use on streams with no header and footer (stream contains FIT defn and data messages only)
-    // decode.IncompleteStream(); // This suppresses exceptions with unexpected eof (also incorrect crc)
-    fit::MesgBroadcaster mesgBroadcaster;
-    Listener listener;
-    std::fstream file;
+//    fit::Decode decode;
+//    // decode.SkipHeader();       // Use on streams with no header and footer (stream contains FIT defn and data messages only)
+//    // decode.IncompleteStream(); // This suppresses exceptions with unexpected eof (also incorrect crc)
+//    fit::MesgBroadcaster mesgBroadcaster;
+//    Listener listener;
+//    std::fstream file;
 
     // Sample GPS Coordinates in semicircles
     std::vector<std::pair<int, int>> route = {
@@ -78,43 +78,43 @@ int main(int argc, char* argv[]){
     };
 
     printCoordinates(route);
-    printf("\nTotal Distance: %d",calcRouteDistance(route));
+    printf("\nTotal Distance: %.2f",calcRouteDistance(route));
 //    printInDegrees(route);
 
     // PART 2 IMPLEMENTATION - TESTING
-    printf("FIT Decode Example Application\n");
-
-    if (argc != 2)
-    {
-        printf("Usage: decode.exe <filename>\n");
-        return -1;
-    }
-
-    file.open(argv[1], std::ios::in | std::ios::binary);
-
-    if (!file.is_open())
-    {
-        printf("Error opening file %s\n", argv[1]);
-        return -1;
-    }
-
-    if (!decode.CheckIntegrity(file))
-    {
-        printf("FIT file integrity failed.\nAttempting to decode...\n");
-    }
-
-    mesgBroadcaster.AddListener((fit::RecordMesgListener&)listener);
-    mesgBroadcaster.AddListener((fit::MesgListener &)listener);
-
-    try
-    {
-        decode.Read(&file, &mesgBroadcaster, &mesgBroadcaster, &listener);
-    }
-    catch (const fit::RuntimeException& e)
-    {
-        printf("Exception decoding file: %s\n", e.what());
-        return -1;
-    }
-
-    printf("Decoded FIT file %s.\n", argv[1]);
+//    printf("FIT Decode Example Application\n");
+//
+//    if (argc != 2)
+//    {
+//        printf("Usage: decode.exe <filename>\n");
+//        return -1;
+//    }
+//
+//    file.open(argv[1], std::ios::in | std::ios::binary);
+//
+//    if (!file.is_open())
+//    {
+//        printf("Error opening file %s\n", argv[1]);
+//        return -1;
+//    }
+//
+//    if (!decode.CheckIntegrity(file))
+//    {
+//        printf("FIT file integrity failed.\nAttempting to decode...\n");
+//    }
+//
+//    mesgBroadcaster.AddListener((fit::RecordMesgListener&)listener);
+//    mesgBroadcaster.AddListener((fit::MesgListener &)listener);
+//
+//    try
+//    {
+//        decode.Read(&file, &mesgBroadcaster, &mesgBroadcaster, &listener);
+//    }
+//    catch (const fit::RuntimeException& e)
+//    {
+//        printf("Exception decoding file: %s\n", e.what());
+//        return -1;
+//    }
+//
+//    printf("Decoded FIT file %s.\n", argv[1]);
 }
